@@ -1,5 +1,5 @@
-# ShopBot — AI-powered store database chatbot
-# Converts plain English questions into SQL queries and returns natural language answers
+#Shop Bot is an AI-powered store database chatbot
+#Converts plain English questions into SQL queries and returns natural language answers
 
 from openai import OpenAI
 from dotenv import load_dotenv
@@ -22,14 +22,14 @@ def get_db_connection():
 
 def generate_sql(user_question):
     schema = """
-    Table: products  — id, name, category, price, stock
-    Table: customers — id, name, email, city
-    Table: sales     — id, product_id (links to products.id), customer_id (links to customers.id), quantity, sale_date
+    Table: products  id, name, category, price, stock
+    Table: customers  id, name, email, city
+    Table: sales  id, product_id (links to products.id), customer_id (links to customers.id), quantity, sale_date
 
     Relationships:
-    - sales.product_id = products.id
-    - sales.customer_id = customers.id
-    - Total spent = products.price * sales.quantity
+    sales.product_id = products.id
+    sales.customer_id = customers.id
+    Total spent = products.price * sales.quantity
     """
 
     response = client.chat.completions.create(
@@ -40,9 +40,9 @@ def generate_sql(user_question):
                 "content": f"""You are a SQL expert. Convert the user's question into a valid MySQL query.
                 Database schema: {schema}
                 Rules:
-                - Return ONLY the SQL query, no explanation, no markdown
-                - Only use SELECT statements, never DELETE or DROP
-                - If the question cannot be answered with this schema, return: INVALID"""
+                Return ONLY the SQL query, no explanation, no markdown
+                Only use SELECT statements, never DELETE or DROP
+                If the question cannot be answered with this schema, return: INVALID"""
             },
             {
                 "role": "user",
@@ -61,7 +61,7 @@ def run_query(sql):
         cursor.execute(sql)
         results = cursor.fetchall()
         columns = [desc[0] for desc in cursor.description]
-        cursor.close()  # always close to free resources
+        cursor.close()  #always close to free up resources
         conn.close()
         return columns, results
 
@@ -91,11 +91,9 @@ def generate_answer(user_question, columns, results):
 
 
 def main():
-    print("================================")
-    print("         ShopBot 🛍️            ")
+    print("         Shop Bot            ")
     print("  Ask me anything about the store!")
-    print("  Type 'quit' to exit")
-    print("================================\n")
+    print("  Type 'quit' to exit\n")
 
     while True:
         user_input = input("You: ").strip()
@@ -104,23 +102,23 @@ def main():
             continue
 
         if user_input.lower() in ["quit", "exit", "bye"]:
-            print("ShopBot: Goodbye! 👋")
+            print("Shop Bot: Goodbye, thank you for visiting!\n")
             break
 
         sql = generate_sql(user_input)
 
         if sql == "INVALID":
-            print("ShopBot: Sorry, I can only answer questions about the store.\n")
+            print("Shop Bot: Sorry, I can only answer questions about the store.\n")
             continue
 
         columns, results = run_query(sql)
 
         if columns is None:
-            print(f"ShopBot: Sorry, something went wrong — {results}\n")
+            print(f"Shop Bot: Sorry, something went wrong: {results}\n")
             continue
 
         answer = generate_answer(user_question=user_input, columns=columns, results=results)
-        print(f"ShopBot: {answer}\n")
+        print(f"Shop Bot: {answer}\n")
 
 
 if __name__ == "__main__":
