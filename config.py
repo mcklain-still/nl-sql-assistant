@@ -22,7 +22,17 @@ Table: sales  id, product_id (links to products.id), customer_id (links to custo
 Relationships:
 sales.product_id = products.id
 sales.customer_id = customers.id
-Total spent = products.price * sales.quantity
+
+How to calculate total spent by a customer:
+SELECT customers.name, SUM(products.price * sales.quantity) as total_spent
+FROM customers
+JOIN sales ON customers.id = sales.customer_id
+JOIN products ON sales.product_id = products.id
+GROUP BY customers.id, customers.name
+ORDER BY total_spent DESC
+
+Always JOIN all three tables when calculating money or revenue.
+Always alias calculated columns with AS.
 """
 
 # Exit commands
