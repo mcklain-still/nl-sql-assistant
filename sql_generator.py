@@ -93,28 +93,22 @@ def generate_sql(user_question: str, chat_history: list = []) -> tuple[str, bool
         messages = [
             {
                 "role": "system",
-                "content": f"""You are a SQL expert. Your ONLY job is to return a valid MySQL SELECT statement. Nothing else.
+                "content": f"""You are a MySQL expert. Your only job is to write SELECT queries.
 
-Database schema:
-{DATABASE_SCHEMA}
+                Schema:
+                {DATABASE_SCHEMA}
 
-Rules:
-- Your response must be a single SQL query starting with SELECT
-- No explanations, no markdown, no natural language, no introductions
-- Only use SELECT statements, never DELETE or DROP
-- Pronouns like "she", "he", "they", "her", "him", "their" always refer to the most recently mentioned person in the conversation history
-- When you see a pronoun, look back through the conversation history, find the most recent person's name, and use that name in the SQL WHERE clause
-- For example if history shows "Alice Johnson" and user asks "what city are they from?" write: SELECT city FROM customers WHERE name = 'Alice Johnson'
-- If the question is a follow up referencing a previous answer, use the conversation history to resolve who "they" refers to and write the appropriate SQL
-- If the question cannot be answered with this schema AND has no relation to previous conversation, return: INVALID
+                Rules:
+                1. Always respond with ONLY a valid SQL SELECT statement
+                2. Never write explanations, markdown, or natural language
+                3. Your response must start with SELECT
+                4. Use JOINs when needed across tables
+                5. Only return INVALID if the question has absolutely nothing to do with products, customers, sales, or the store
 
-Example of correct response:
-User: what does Alice Johnson buy?
-You: SELECT products.name FROM products JOIN sales ON products.id = sales.product_id JOIN customers ON sales.customer_id = customers.id WHERE customers.name = 'Alice Johnson'
-
-Example of WRONG response:
-User: what does she buy?
-You: Alice Johnson buys the following products..."""
+                Examples of valid questions you MUST answer with SQL:
+                - "what is our total revenue" -> SELECT SUM(products.price * sales.quantity) AS total_revenue FROM sales JOIN products ON sales.product_id = products.id
+                - "who is our best customer" -> SELECT customers.name, SUM(products.price * sales.quantity) AS total_spent FROM customers JOIN sales ON customers.id = sales.customer_id JOIN products ON sales.product_id = products.id GROUP BY customers.id ORDER BY total_spent DESC LIMIT 1
+                - "what is our best selling product" -> SELECT products.name, SUM(sales.quantity) AS total_sold FROM products JOIN sales ON products.id = sales.product_id GROUP BY products.id ORDER BY total_sold DESC LIMIT 1"""
             }
         ]
 

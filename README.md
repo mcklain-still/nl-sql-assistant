@@ -1,86 +1,180 @@
-# Shop Bot 🏪
+# Store Analytics Assistant
 
-A natural-language-to-SQL AI assistant for store database queries. Converts English questions into SQL queries and returns natural-language answers.
+A natural language interface for relational database querying, powered by OpenAI and MySQL. Converts plain English questions into validated SQL queries and returns human-readable answers through a web-based chat interface.
+
+## Overview
+
+This project demonstrates an end-to-end AI-driven query layer that bridges conversational AI and structured data. It was built to showcase practical skills in prompt engineering, database design, API integration, and full stack Python development.
+
+## Demo
+
+| Question | Type | Response |
+|---|---|---|
+| "What is our best selling product?" | Data | Queries sales table, returns ranked results |
+| "Who is our best customer?" | Data | JOINs customers, sales, and products tables |
+| "What city are they from?" | Follow-up | Resolves context from previous answer |
+| "How can we grow our electronics sales?" | Business | GPT-powered strategic recommendation |
 
 ## Architecture
+User Question
+|
+Question Classifier (data vs. business)
+|                    |
+SQL Generator         Business Advisor
+|                    |
+SQL Validator         GPT Response
+|
+MySQL Database
+|
+Answer Generator
+|
+Natural Language Response
 
-This project demonstrates:
-- **NLP + SQL**: Converting natural language to structured queries
-- **Prompt Engineering**: Crafted prompts to guide LLM behavior
-- **Safety & Validation**: SQL validation to prevent unsafe queries
-- **Modular Design**: Separated concerns for testing and maintainability
-
-### Key Components
-
-- **`config.py`**: Configuration and schema definition
-- **`sql_generator.py`**: Converts questions → SQL via OpenAI
-- **`db.py`**: Database connection and query execution
-- **`answer_generator.py`**: Converts results → natural language
-- **`cli.py`**: User-facing CLI interface
-- **`utils.py`**: Validation and utility functions
-
-## Setup
-
-1. **Install dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-2. **Configure environment variables**:
-   ```bash
-   cp .env.example .env
-   # Edit .env with your API keys and database credentials
-   ```
-
-3. **Run the bot**:
-   ```bash
-   python cli.py
-   ```
+### Project Structure
+store-analytics-assistant/
+├── app.py                  # Flask web server and chat endpoint
+├── config.py               # Configuration, schema, and constants
+├── sql_generator.py        # Natural language to SQL via OpenAI
+├── answer_generator.py     # SQL results to natural language via OpenAI
+├── db.py                   # MySQL connection and query execution
+├── utils.py                # SQL validation and logging utilities
+├── cli.py                  # Command-line interface
+├── test_shopbot.py         # Unit tests
+├── requirements.txt        # Python dependencies
+├── .env.example            # Environment variable template
+└── templates/
+└── index.html          # Web chat interface
 
 ## Features
 
-✅ Natural language question processing  
-✅ SQL generation via GPT-3.5-turbo  
-✅ SQL validation (prevents DELETE, DROP, etc.)  
-✅ Error handling and logging  
-✅ Formatted result presentation  
+- **Natural Language to SQL** — converts plain English into validated MySQL queries using GPT-3.5-turbo
+- **Conversation Memory** — retains context across exchanges for follow-up questions and pronoun resolution
+- **Business Intelligence Mode** — classifies strategic questions and responds with GPT-powered business advice
+- **SQL Validation** — blocks destructive keywords (DELETE, DROP, INSERT, UPDATE) before execution
+- **Automatic Retry Logic** — retries failed queries silently before surfacing errors to the user
+- **Web Interface** — responsive chat UI with suggested starter questions
+- **Modular Design** — single-responsibility modules for readability, testing, and maintainability
 
-## Safety
+## Tech Stack
 
-- Only `SELECT` statements allowed
-- Forbidden keywords: `DELETE`, `DROP`, `INSERT`, `UPDATE`, etc.
-- Comment injection prevention
-- Comprehensive error handling
+| Layer | Technology |
+|---|---|
+| Language | Python 3 |
+| AI | OpenAI GPT-3.5-turbo |
+| Database | MySQL |
+| Web Framework | Flask |
+| DB Connector | mysql-connector-python |
+| Environment | python-dotenv |
+
+## Setup
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/chadmstill/store-analytics-assistant.git
+cd store-analytics-assistant
+```
+
+### 2. Create a virtual environment
+```bash
+python -m venv .venv
+source .venv/bin/activate        # Mac/Linux
+.venv\Scripts\activate           # Windows
+```
+
+### 3. Install dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Configure environment variables
+```bash
+cp .env.example .env
+```
+
+Edit `.env` with your credentials:
+OPENAI_API_KEY=your_openai_api_key
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=your_mysql_password
+DB_NAME=shopbot_db
+
+### 5. Set up the database
+Run the following in your MySQL terminal:
+```sql
+CREATE DATABASE shopbot_db;
+USE shopbot_db;
+
+CREATE TABLE products (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    category VARCHAR(100),
+    price DECIMAL(10,2),
+    stock INT
+);
+
+CREATE TABLE customers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100),
+    city VARCHAR(100)
+);
+
+CREATE TABLE sales (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    product_id INT,
+    customer_id INT,
+    quantity INT,
+    sale_date DATE,
+    FOREIGN KEY (product_id) REFERENCES products(id),
+    FOREIGN KEY (customer_id) REFERENCES customers(id)
+);
+```
+
+### 6. Run the application
+```bash
+python app.py
+```
+
+Visit `http://127.0.0.1:5000` in your browser.
+
+## Usage Examples
+
+**Data queries:**
+- "What products do we sell?"
+- "What is our total revenue?"
+- "Who is our best customer?"
+- "What city are they from?"
+- "What does she buy?"
+- "Which products are low on stock?"
+
+**Business queries:**
+- "How can we grow our sales?"
+- "Should we expand our product range?"
+- "What marketing strategies should we use?"
 
 ## Testing
 
-Run tests with:
 ```bash
 python -m unittest test_shopbot.py
 ```
 
-## Example Queries
+## Future Improvements
 
-- "What products are in stock?"
-- "How many customers are from New York?"
-- "What's the total revenue from sales?"
-- "List products under $50"
+- User authentication and multi-session support
+- CSV export for query results
+- Dynamic schema introspection
+- Fine-tuned model for improved SQL accuracy
+- Cloud deployment (AWS or Heroku)
+- Data visualization dashboard
 
-## Project Structure
+## Skills Demonstrated
 
-```
-SQL-Chat/
-├── config.py               # Configuration and constants
-├── db.py                   # Database operations
-├── sql_generator.py        # SQL generation with LLM
-├── answer_generator.py     # Natural language answer generation
-├── utils.py                # Validation and utilities
-├── cli.py                  # Main CLI interface
-├── test_shopbot.py         # Unit tests
-├── requirements.txt        # Dependencies
-├── .env.example            # Environment variable template
-└── README.md               # This file
-```
+- **AI and Prompt Engineering** — production-style OpenAI API integration with carefully designed system prompts and retry logic
+- **Database Design** — relational schema with foreign keys, multi-table JOINs, and aggregation queries
+- **Software Architecture** — modular, single-responsibility design across seven independent files
+- **Security** — SQL injection prevention through keyword validation and SELECT-only enforcement
+- **Full Stack Development** — Python Flask backend with HTML, CSS, and JavaScript frontend
+- **Problem Solving** — conversation memory, query classification, and graceful error handling built from scratch
 
 ## License
 

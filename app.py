@@ -50,8 +50,7 @@ def chat():
                 logger.info(f"Retrying SQL generation... attempt {attempts + 1}")
                 sql, sql_success, sql_error = generate_sql(user_input, data_history)
                 attempts += 1
-
-            logger.info(f"Final SQL result: sql={sql[:50] if sql else 'empty'}, success={sql_success}, error={sql_error}")
+                
 
             if not sql_success:
                 if sql == "INVALID":
@@ -77,9 +76,8 @@ def chat():
             data_history.append({"role": "user", "content": user_input})
             data_history.append({"role": "assistant", "content": f"SQL query was executed successfully. Raw data: {results}"})
 
-            # Trim to last 2 exchanges only
-            if len(data_history) > 4:
-                data_history = data_history[-4:]
+            # Keep only the last exchange (2 messages) to prevent GPT confusion
+            data_history = data_history[-2:]
 
             session["data_history"] = data_history
 
