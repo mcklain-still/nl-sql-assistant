@@ -70,7 +70,7 @@ store-analytics-assistant/
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/chadmstill/store-analytics-assistant.git
+git clone https://github.com/mcklain-still/store-analytics-assistant.git
 cd store-analytics-assistant
 ```
 
