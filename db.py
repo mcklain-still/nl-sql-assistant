@@ -1,6 +1,6 @@
 import mysql.connector
 import logging
-from config import DB_HOST, DB_USER, DB_PASSWORD, DB_NAME
+from config import DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +20,8 @@ def get_db_connection():
             host=DB_HOST,
             user=DB_USER,
             password=DB_PASSWORD,
-            database=DB_NAME
+            database=DB_NAME,
+            port=DB_PORT
         )
         logger.info("Database connection established")
         return conn
