@@ -6,7 +6,6 @@ from typing import Optional
 from sql_generator import generate_sql, classify_question, generate_business_answer
 from answer_generator import generate_answer
 from db import run_query
-from utils import log_error
 import logging
 
 logger = logging.getLogger(__name__)
