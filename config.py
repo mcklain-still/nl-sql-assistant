@@ -13,15 +13,7 @@ DB_PORT = int(os.getenv("DB_PORT", "3306"))
 
 # --- OpenAI Config ---
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-
-# Debug: log whether the key was found
-if OPENAI_API_KEY:
-    print(f"OPENAI_API_KEY found, starts with: {OPENAI_API_KEY[:8]}...")
-else:
-    print("ERROR: OPENAI_API_KEY is NOT set!")
-    print("All env vars:", dict(os.environ))
-
-MODEL = "gpt-3.5-turbo"
+MODEL = "gpt-4o-mini"
 
 # --- Database Schema ---
 DATABASE_SCHEMA = """
