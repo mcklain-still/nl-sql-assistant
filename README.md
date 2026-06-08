@@ -1,27 +1,34 @@
 # Store Analytics Assistant
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Render-46BC99?style=for-the-badge&logo=render&logoColor=white)](https://nl-sql-assistant.onrender.com)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Render-46BC99?style=for-the-badge&logo=render&logoColor=white)](https://nl-sql-assistant.onrender.com)
 
-A natural language interface for relational database querying, powered by OpenAI and MySQL. Converts plain English questions into validated SQL queries and returns human-readable answers through a web-based chat interface.
+A natural language interface for relational database querying, powered by
+OpenAI and MySQL. Converts plain English questions into validated SQL queries
+and returns human-readable answers through a web-based chat interface.
 
 ## Live Demo
 
-Try it now: **[nl-sql-assistant.onrender.com](https://nl-sql-assistant.onrender.com)**
+Try it now:
+**[nl-sql-assistant.onrender.com](https://nl-sql-assistant.onrender.com)**
 
 Ask questions like:
-- *"What is our best selling product?"*
-- *"Who is our best customer?"*
-- *"How can we grow our sales?"*
+
+- *What is our best selling product?*
+- *Who is our best customer?*
+- *How can we grow our sales?*
 
 ---
 
 ## Overview
 
-This project demonstrates an end-to-end AI-driven query layer that bridges conversational AI and structured data. It was built to showcase practical skills in prompt engineering, database design, API integration, and full stack Python development.
+This project demonstrates an end-to-end AI-driven query layer that bridges
+conversational AI and structured data. It was built to showcase practical
+skills in prompt engineering, database design, API integration, and full stack
+Python development.
 
 ## Architecture
 
-```
+```text
 User Question
        |
 Question Classifier (data vs. business)
@@ -39,7 +46,7 @@ Natural Language Response
 
 ### Project Structure
 
-```
+```text
 nl-sql-assistant/
 ├── app.py               # Flask web server and chat endpoint
 ├── chat_engine.py       # Shared logic for web app and CLI
@@ -60,25 +67,30 @@ nl-sql-assistant/
 
 ## Features
 
-- **Natural Language to SQL** — converts plain English into validated MySQL queries using OpenAI GPT-4o-mini
-- **Conversation Memory** — retains context across exchanges for follow-up questions and pronoun resolution
-- **Business Intelligence Mode** — classifies strategic questions and responds with GPT-powered business advice
-- **SQL Validation** — blocks destructive keywords (DELETE, DROP, INSERT, UPDATE) before execution
+- **Natural Language to SQL** — converts plain English into validated MySQL
+  queries using OpenAI GPT-4o-mini
+- **Conversation Memory** — retains context across exchanges for follow-up
+  questions and pronoun resolution
+- **Business Intelligence Mode** — classifies strategic questions and responds
+  with GPT-powered business advice
+- **SQL Validation** — blocks destructive keywords (DELETE, DROP, INSERT,
+  UPDATE) before execution
 - **Web Interface** — responsive chat UI with suggested starter questions
 - **CLI Interface** — same functionality available from the terminal
-- **Modular Design** — single-responsibility modules for readability, testing, and maintainability
+- **Modular Design** — single-responsibility modules for readability, testing,
+  and maintainability
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Language | Python 3 |
-| AI | OpenAI GPT-4o-mini |
-| Database | MySQL (Aiven) |
-| Web Framework | Flask |
-| Deployment | Render |
-| DB Connector | mysql-connector-python |
-| Environment | python-dotenv |
+| Layer           | Technology                |
+|-----------------|---------------------------|
+| Language        | Python 3                  |
+| AI              | OpenAI GPT-4o-mini        |
+| Database        | MySQL (Aiven)             |
+| Web Framework   | Flask                     |
+| Deployment      | Render                    |
+| DB Connector    | mysql-connector-python    |
+| Environment     | python-dotenv             |
 
 ## Local Setup
 
@@ -162,16 +174,18 @@ python cli.py
 ## Usage Examples
 
 **Data queries:**
-- "What products do we sell?"
-- "What is our total revenue?"
-- "Who is our best customer?"
-- "What city are they from?"
-- "Which products are low on stock?"
+
+- What products do we sell?
+- What is our total revenue?
+- Who is our best customer?
+- What city are they from?
+- Which products are low on stock?
 
 **Business queries:**
-- "How can we grow our sales?"
-- "Should we expand our product range?"
-- "What marketing strategies should we use?"
+
+- How can we grow our sales?
+- Should we expand our product range?
+- What marketing strategies should we use?
 
 ## Testing
 
@@ -181,26 +195,34 @@ python -m unittest test_shopbot.py
 
 ## Deployment
 
-This project is configured for deployment on Render using the included `Procfile` and `runtime.txt`. Set the following environment variables in your Render dashboard:
+This project is configured for deployment on Render using the included
+`Procfile` and `runtime.txt`. Set the following environment variables in your
+Render dashboard:
 
-| Variable | Description |
-|---|---|
-| `DB_HOST` | MySQL host (e.g., Aiven) |
-| `DB_USER` | MySQL user |
-| `DB_PASSWORD` | MySQL password |
-| `DB_NAME` | MySQL database name |
-| `DB_PORT` | MySQL port (default: 3306) |
-| `OPENAI_API_KEY` | OpenAI API key |
+| Variable          | Description                 |
+|-------------------|-----------------------------|
+| `DB_HOST`         | MySQL host (e.g., Aiven)    |
+| `DB_USER`         | MySQL user                  |
+| `DB_PASSWORD`     | MySQL password              |
+| `DB_NAME`         | MySQL database name         |
+| `DB_PORT`         | MySQL port (default: 3306)  |
+| `OPENAI_API_KEY`  | OpenAI API key              |
 
 ## Skills Demonstrated
 
-- **AI and Prompt Engineering** — production-style OpenAI API integration with carefully designed system prompts
-- **Database Design** — relational schema with foreign keys, multi-table JOINs, and aggregation queries
-- **Software Architecture** — modular, single-responsibility design with shared logic between web and CLI interfaces
-- **Security** — SQL injection prevention through keyword validation and SELECT-only enforcement
-- **Full Stack Development** — Python Flask backend with HTML, CSS, and JavaScript frontend
+- **AI and Prompt Engineering** — production-style OpenAI API integration with
+  carefully designed system prompts
+- **Database Design** — relational schema with foreign keys, multi-table JOINs,
+  and aggregation queries
+- **Software Architecture** — modular, single-responsibility design with shared
+  logic between web and CLI interfaces
+- **Security** — SQL injection prevention through keyword validation and
+  SELECT-only enforcement
+- **Full Stack Development** — Python Flask backend with HTML, CSS, and
+  JavaScript frontend
 - **Cloud Deployment** — deployed on Render with managed MySQL on Aiven
-- **Problem Solving** — conversation memory, query classification, and graceful error handling built from scratch
+- **Problem Solving** — conversation memory, query classification, and graceful
+  error handling built from scratch
 
 ## License
 
