@@ -41,5 +41,4 @@ Always alias calculated columns with AS.
 EXIT_COMMANDS = ["quit", "exit", "bye", "q"]
 
 # --- Validation ---
-ALLOWED_SQL_KEYWORDS = {"SELECT", "FROM", "WHERE", "JOIN", "LEFT", "RIGHT", "INNER", "ON", "AND", "OR", "GROUP", "BY", "ORDER", "LIMIT", "SUM", "COUNT", "AVG", "MAX", "MIN", "DISTINCT"}
 FORBIDDEN_KEYWORDS = {"DELETE", "DROP", "INSERT", "UPDATE", "ALTER", "CREATE", "TRUNCATE"}

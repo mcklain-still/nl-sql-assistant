@@ -1,7 +1,5 @@
 import logging
-from sql_generator import generate_sql, classify_question, generate_business_answer
-from answer_generator import generate_answer
-from db import run_query
+from chat_engine import process_message
 from config import EXIT_COMMANDS
 from utils import log_error
 
@@ -31,50 +29,8 @@ def main():
                 logger.info("User exited the chat")
                 break
 
-            # Detect if this is a data question or business advice question
-            question_type = classify_question(user_input)
-
-            if question_type == "business":
-                # Answer directly with GPT business knowledge
-                answer, success, error = generate_business_answer(user_input, chat_history)
-                if not success:
-                    print(f"\nShop Bot: Sorry, something went wrong: {error}\n")
-                    continue
-                print(f"\nShop Bot: {answer}\n")
-
-            else:
-                # Answer from the database
-                sql, sql_success, sql_error = generate_sql(user_input, chat_history)
-
-                if not sql_success:
-                    if sql == "INVALID":
-                        print(f"\nShop Bot: Sorry, I can only answer questions about the store.\n")
-                    else:
-                        print(f"\nShop Bot: {sql_error}\n")
-                    continue
-
-                columns, results, db_success, db_error = run_query(sql)
-
-                if not db_success:
-                    print(f"\nShop Bot: Sorry, something went wrong: {db_error}\n")
-                    continue
-
-                answer, answer_success, answer_error = generate_answer(
-                    user_question=user_input,
-                    columns=columns,
-                    results=results,
-                    chat_history=chat_history
-                )
-
-                if not answer_success:
-                    print(f"\nShop Bot: {answer_error}\n")
-                    continue
-
-                print(f"\nShop Bot: {answer}\n")
-
-            # Save exchange to history regardless of question type
-            chat_history.append({"role": "user", "content": user_input})
-            chat_history.append({"role": "assistant", "content": answer})
+            response, success, _ = process_message(user_input, chat_history)
+            print(f"\nShop Bot: {response}\n")
 
         except KeyboardInterrupt:
             print("\n\nShop Bot: Interrupted. Goodbye!\n")
