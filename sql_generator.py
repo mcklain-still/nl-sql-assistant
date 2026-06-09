@@ -1,3 +1,5 @@
+import re
+
 from openai import OpenAI
 import logging
 from config import OPENAI_API_KEY, MODEL, DATABASE_SCHEMA
@@ -71,6 +73,12 @@ Be concise, friendly, and actionable. Use bullet points where helpful."""
         )
 
         answer = response.choices[0].message.content.strip()
+
+        # remove bold markdown
+        answer = re.sub(r"\*\*(.*?)\*\*", r"\1", answer)
+
+        # optional: clean leftover single asterisks
+        answer = answer.replace("**", "")
         logger.info("Business answer generated successfully")
         return answer, True, ""
 
