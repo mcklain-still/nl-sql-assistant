@@ -109,7 +109,8 @@ def generate_sql(user_question: str, chat_history: None | list = None) -> tuple[
                 2. Never write explanations, markdown, or natural language
                 3. Your response must start with SELECT
                 4. Use JOINs when needed across tables
-                5. Only return INVALID if the question has absolutely nothing to do with products, customers, sales, or the store
+                5. Only return INVALID if the question cannot be answered using the database schema provided.
+                If the question is ambiguous or refers to previous context (e.g., "she", "he", "that employee"), attempt to resolve it using chat history.
 
                 Examples of valid questions you MUST answer with SQL:
                 - "what is our total revenue" -> SELECT SUM(products.price * sales.quantity) AS total_revenue FROM sales JOIN products ON sales.product_id = products.id
