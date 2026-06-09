@@ -3,7 +3,7 @@ Core chat engine — shared logic used by both the web app and CLI.
 This prevents duplication between app.py and cli.py.
 """
 from typing import Optional
-from sql_generator import generate_sql, classify_question, generate_business_answer
+from sql_generator import generate_sql, generate_sql_with_correction, classify_question, generate_business_answer
 from answer_generator import generate_answer
 from db import run_query
 import logging
@@ -35,7 +35,19 @@ def process_data_question(
     columns, results, db_success, db_error = run_query(sql)
 
     if not db_success:
-        return f"Sorry, something went wrong: {db_error}", False
+        # Retry once: feed the error back to the LLM for a corrected query
+        logger.info("Query failed — attempting SQL correction retry")
+        retry_sql, retry_ok, _ = generate_sql_with_correction(
+            user_question=user_input,
+            failed_sql=sql,
+            db_error=db_error,
+            chat_history=chat_history,
+        )
+        if retry_ok:
+            columns, results, db_success, db_error = run_query(retry_sql)
+
+        if not db_success:
+            return f"Sorry, something went wrong: {db_error}", False
 
     answer, answer_success, answer_error = generate_answer(
         user_question=user_input,
