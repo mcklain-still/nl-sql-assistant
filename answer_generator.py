@@ -33,7 +33,7 @@ def generate_answer(user_question: str, columns: list, results: list, chat_histo
         messages = [
             {
                 "role": "system",
-                "content": "You are a database assistant. Answer questions using any tables available in the database schema. If the information exists in the schema, generate SQL. Only refuse if the information cannot be derived from the database."
+                "content": "You are a helpful store assistant. Answer the user's question naturally based on the database results. Be concise and friendly. Avoid listing raw data; provide insights instead."
             }
         ]
 
