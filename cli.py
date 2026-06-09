@@ -29,7 +29,8 @@ def main():
                 logger.info("User exited the chat")
                 break
 
-            response, success, _ = process_message(user_input, chat_history)
+            response, success, _, chat_history = process_message(user_input, chat_history)
+            chat_history = chat_history[-6:]
             print(f"\nShop Bot: {response}\n")
 
         except KeyboardInterrupt:

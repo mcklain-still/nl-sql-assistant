@@ -27,7 +27,7 @@ def generate_answer(user_question: str, columns: list, results: list, chat_histo
         logger.info("Generating natural language answer...")
 
         if not results:
-            return "No results found for your question.", True, ""
+            return "I couldn't find any matching records for your question. This might mean the data doesn't exist in our database, or you could try rephrasing your question.", True, ""
 
         # Start with the system prompt
         messages = [

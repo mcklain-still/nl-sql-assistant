@@ -42,15 +42,11 @@ def chat():
     chat_history = session.get("chat_history", [])
 
     try:
-        response_text, success, question_type = process_message(user_input, chat_history)
-
-        if not success:
-            return jsonify({"response": response_text})
+        response_text, success, question_type, updated_history = process_message(user_input, chat_history)
 
         # Keep only the last 3 exchanges (6 messages) for context
         # without exceeding token limits
-        chat_history = chat_history[-6:]
-        session["chat_history"] = chat_history
+        session["chat_history"] = updated_history[-6:]
 
         return jsonify({"response": response_text})
 

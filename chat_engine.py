@@ -73,17 +73,18 @@ def process_business_question(
 def process_message(
     user_input: str,
     chat_history: Optional[list] = None
-) -> tuple[str, bool, str]:
+) -> tuple[str, bool, str, list]:
     """
     Process a user message and return a response.
 
     Args:
         user_input: The user's question
-        chat_history: Optional conversation history (will be mutated in-place)
+        chat_history: Optional conversation history (NOT mutated)
 
     Returns:
-        tuple: (response_text, success, question_type)
+        tuple: (response_text, success, question_type, updated_history)
                question_type is "data" or "business"
+               updated_history is the chat history with the new exchange appended (if successful)
     """
     if chat_history is None:
         chat_history = []
@@ -95,8 +96,10 @@ def process_message(
     else:
         response, success = process_data_question(user_input, chat_history)
 
+    # Return a new history list (no in-place mutation)
+    updated_history = list(chat_history)
     if success:
-        chat_history.append({"role": "user", "content": user_input})
-        chat_history.append({"role": "assistant", "content": response})
+        updated_history.append({"role": "user", "content": user_input})
+        updated_history.append({"role": "assistant", "content": response})
 
-    return response, success, question_type
+    return response, success, question_type, updated_history

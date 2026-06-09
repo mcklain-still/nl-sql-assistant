@@ -60,6 +60,12 @@ ORDER BY revenue_generated DESC
 
 Always JOIN all relevant tables when calculating money, revenue, or ratings.
 Always alias calculated columns with AS.
+
+Handling relative/ambiguous terms:
+- "low on stock" → Use ORDER BY stock ASC LIMIT 3–5 (do NOT use hardcoded thresholds like WHERE stock < 10)
+- "best selling" → Use ORDER BY total_sold DESC LIMIT 1–5
+- "highest paid" / "best paid" → Use ORDER BY salary DESC LIMIT 1–5
+- When the user asks for a ranked or relative list, use ORDER BY ... ASC/DESC LIMIT N instead of WHERE.
 """
 
 # --- Exit commands ---

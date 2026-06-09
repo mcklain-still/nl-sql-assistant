@@ -128,6 +128,12 @@ def generate_sql(user_question: str, chat_history: None | list = None) -> tuple[
 
         sql = response.choices[0].message.content.strip()
 
+        # Strip markdown code fences if present (GPT sometimes wraps SQL in backticks)
+        if sql.startswith("```"):
+            sql = sql.strip("`").strip()
+            if sql.lower().startswith("sql"):
+                sql = sql[3:].strip()
+
         if sql == "INVALID":
             logger.info("Question deemed outside schema scope")
             return "INVALID", False, "Question is outside the scope of available data"
