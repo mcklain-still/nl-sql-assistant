@@ -103,8 +103,6 @@ python cli.py
 - What is the average rating for each product?
 - Which supplier has the most products?
 - Who is our top salesperson?
-- Which employee made the most sales?
-- What is the average salary by position?
 
 **Business queries:**
 
