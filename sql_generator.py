@@ -38,18 +38,21 @@ Reply with ONLY one word: data or business"""
     return result if result in ["data", "business"] else "data"
 
 
-def generate_business_answer(user_question: str, chat_history: list = []) -> tuple[str, bool, str]:
+def generate_business_answer(user_question: str, chat_history: None | list = None) -> tuple[str, bool, str]:
     """
     Answer a business strategy question using store context and GPT knowledge.
 
     Returns:
         tuple: (answer, success, error_message)
     """
+    if chat_history is None:
+        chat_history = []
+
     try:
         messages = [
             {
                 "role": "system",
-                "content": f"""You are a helpful business advisor for a small retail store.
+                "content":  """You are a helpful business advisor for a small retail store.
 The store sells the following types of products: Electronics, Footwear, Fitness gear, and Accessories.
 You have access to the store's data context from previous answers in the conversation.
 Give practical, specific advice based on what you know about the store.
@@ -76,7 +79,7 @@ Be concise, friendly, and actionable. Use bullet points where helpful."""
         return "", False, str(e)
 
 
-def generate_sql(user_question: str, chat_history: list = []) -> tuple[str, bool, str]:
+def generate_sql(user_question: str, chat_history: None | list = None) -> tuple[str, bool, str]:
     """
     Generate SQL from natural language question using OpenAI.
 
@@ -87,6 +90,9 @@ def generate_sql(user_question: str, chat_history: list = []) -> tuple[str, bool
     Returns:
         tuple: (sql_query, success, error_message)
     """
+    if chat_history is None:
+        chat_history = []
+
     try:
         logger.info(f"Generating SQL for question: {user_question[:50]}...")
 

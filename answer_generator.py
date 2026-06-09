@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 client = OpenAI(api_key=OPENAI_API_KEY)
 
 
-def generate_answer(user_question: str, columns: list, results: list, chat_history: list = []) -> tuple[str, bool, str]:
+def generate_answer(user_question: str, columns: list, results: list, chat_history: None | list = None) -> tuple[str, bool, str]:
     """
     Generate natural language answer from query results.
 
@@ -20,6 +20,9 @@ def generate_answer(user_question: str, columns: list, results: list, chat_histo
     Returns:
         tuple: (answer, success, error_message)
     """
+    if chat_history is None:
+        chat_history = []
+
     try:
         logger.info("Generating natural language answer...")
 

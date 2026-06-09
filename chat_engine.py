@@ -29,13 +29,13 @@ def process_data_question(
 
     if not sql_success:
         if sql == "INVALID":
-            return "Sorry, I can only answer questions about the store.", True
-        return "I had trouble understanding that question. Could you try rephrasing it?", True
+            return "Sorry, I can only answer questions about the store.", False
+        return "I had trouble understanding that question. Could you try rephrasing it?", False
 
     columns, results, db_success, db_error = run_query(sql)
 
     if not db_success:
-        return f"Sorry, something went wrong: {db_error}", True
+        return f"Sorry, something went wrong: {db_error}", False
 
     answer, answer_success, answer_error = generate_answer(
         user_question=user_input,
@@ -45,7 +45,7 @@ def process_data_question(
     )
 
     if not answer_success:
-        return f"Sorry, something went wrong: {answer_error}", True
+        return f"Sorry, something went wrong: {answer_error}", False
 
     return answer, True
 

@@ -18,6 +18,8 @@ nl-sql-assistant/
 ├── cli.py               # Command-line interface
 ├── test_shopbot.py      # Unit tests
 ├── requirements.txt     # Python dependencies
+├── schema.sql           # Database and table creation
+├── seed.sql             # Sample data for demo usage
 ├── .env.example         # Environment variable template
 ├── Procfile             # Render deployment configuration
 ├── runtime.txt          # Python runtime version
@@ -64,36 +66,16 @@ Edit `.env` with your credentials (see `.env.example` for the full list).
 
 ### 5. Set up the database
 
-Run the following in your MySQL terminal:
+Create the database and tables:
 
-```sql
-CREATE DATABASE shopbot_db;
-USE shopbot_db;
+```bash
+mysql -u your_user -p < schema.sql
+```
 
-CREATE TABLE products (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100),
-    category VARCHAR(100),
-    price DECIMAL(10,2),
-    stock INT
-);
+Then populate it with sample data:
 
-CREATE TABLE customers (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100),
-    email VARCHAR(100),
-    city VARCHAR(100)
-);
-
-CREATE TABLE sales (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    product_id INT,
-    customer_id INT,
-    quantity INT,
-    sale_date DATE,
-    FOREIGN KEY (product_id) REFERENCES products(id),
-    FOREIGN KEY (customer_id) REFERENCES customers(id)
-);
+```bash
+mysql -u your_user -p shopbot_db < seed.sql
 ```
 
 ### 6. Run the application
@@ -117,8 +99,12 @@ python cli.py
 - What products do we sell?
 - What is our total revenue?
 - Who is our best customer?
-- What city are they from?
 - Which products are low on stock?
+- What is the average rating for each product?
+- Which supplier has the most products?
+- Who is our top salesperson?
+- Which employee made the most sales?
+- What is the average salary by position?
 
 **Business queries:**
 

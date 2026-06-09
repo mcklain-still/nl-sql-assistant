@@ -60,11 +60,11 @@ def run_query(sql: str) -> tuple[list, list, bool, str]:
     except mysql.connector.Error as e:
         error_msg = f"Database error: {str(e)}"
         logger.error(error_msg)
-        return None, None, False, error_msg
+        return [], [], False, error_msg
     except Exception as e:
         error_msg = f"Unexpected error: {str(e)}"
         logger.error(error_msg)
-        return None, None, False, error_msg
+        return [], [], False, error_msg
     finally:
         if cursor:
             cursor.close()
